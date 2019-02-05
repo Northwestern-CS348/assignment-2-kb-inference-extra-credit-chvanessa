@@ -130,6 +130,13 @@ class KnowledgeBase(object):
         # Implementation goes here
         # Not required for the extra credit assignment
 
+    def explain_helper(self, lst):
+        for l in lst:
+            print(l)
+            next = l.supported_by
+            if next: # If supported_by list is not empty
+                self.explain_helper(next)
+
     def kb_explain(self, fact_or_rule):
         """
         Explain where the fact or rule comes from
@@ -142,6 +149,13 @@ class KnowledgeBase(object):
         """
         ####################################################
         # Student code goes here
+
+        print(fact_or_rule,'\n')
+        print('SUPPORTED BY\n')
+        suplist = fact_or_rule.supported_by
+        self.explain_helper(suplist)
+
+
 
 
 class InferenceEngine(object):
