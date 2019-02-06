@@ -133,18 +133,13 @@ class KnowledgeBase(object):
     def explain_helper(self, supportlist, outlist, n):
 
         #if supportlist:
-        outlist.extend(" " * n)
-        outlist.append('SUPPORTED BY\n')
-
         og = 2
-        n += 2
+
         # Iterating through each fact,rule pair
         for l in supportlist:
-            print('checking what l looks like')
-            print(l)
-            print('what is n?')
-            outlist.append(str(n))
-            outlist.append('\n')
+            outlist.extend(" " * n)
+            outlist.append('SUPPORTED BY\n')
+            n = n + 2
             for fr in l:
                 # Append the fact/rule
                 next = fr.supported_by
@@ -168,18 +163,12 @@ class KnowledgeBase(object):
                 if fr.asserted: outlist.append(' ASSERTED\n')
                 else: outlist.append('\n')
 
-            # Calls explain_helper recursively if any additional supports
-            if next:
-                n += 2
-                self.explain_helper(next, outlist, n)
-            else:
-                if supportlist.index(l) == len(supportlist)-1: break
-                else:
-                    outlist.extend(" " * og)
-                    n = og
-                    outlist.append('SUPPORTED BY\n')
-                    outlist.append(str(n))
-                    outlist.append('testing n^')
+                # Calls explain_helper recursively if any additional supports
+                if next:
+                    n = n + 2
+                    self.explain_helper(next, outlist, n)
+            # else:
+            n = og
         return outlist
 
     def kb_explain(self, fact_or_rule):
