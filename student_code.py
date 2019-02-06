@@ -130,12 +130,48 @@ class KnowledgeBase(object):
         # Implementation goes here
         # Not required for the extra credit assignment
 
-    def explain_helper(self, lst):
-        for l in lst:
+    def explain_helper(self, supportlist, outlist, n):
+
+        #if supportlist:
+        outlist.extend(" " * n)
+        outlist.append('SUPPORTED BY\n')
+
+        og = 2
+        n += 2
+        # Iterating through each fact,rule pair
+        for l in supportlist:
+            print('checking what l looks like')
             print(l)
-            next = l.supported_by
-            if next: # If supported_by list is not empty
-                self.explain_helper(next)
+            for fr in l:
+
+                # Append the fact/rule
+                next = fr.supported_by
+                if isinstance(fr,Fact):
+                    outlist.extend(" " * n)
+                    outlist.append('fact: ' + str(fr.statement))
+                else:
+                    outlist.extend(" " * n)
+                    outlist.append('rule: (')
+
+                    ct = len(fr.lhs) - 1
+                    for eachfact in fr.lhs:
+                        outlist.append(str(eachfact))
+                        if ct:
+                            outlist.append(', ')
+                            ct -= 1
+                    outlist.append(') -> ')
+                    outlist.append(str(fr.rhs))
+
+                # Print asserted if fact/rule is asserted
+                if fr.asserted: outlist.append(' ASSERTED\n')
+                else: outlist.append('\n')
+
+            if next:    # If supported_by list is not empty
+                n += 2
+                self.explain_helper(next, outlist, n)
+            outlist.extend(" " * og)
+            outlist.append('SUPPORTED BY\n')
+        return outlist
 
     def kb_explain(self, fact_or_rule):
         """
@@ -150,11 +186,40 @@ class KnowledgeBase(object):
         ####################################################
         # Student code goes here
 
-        print(fact_or_rule,'\n')
-        print('SUPPORTED BY\n')
-        suplist = fact_or_rule.supported_by
-        self.explain_helper(suplist)
+        if isinstance(fact_or_rule, Fact):
+            if fact_or_rule in self.facts:
+                cap = 'fact: '
+                fact_or_rule = self._get_fact(fact_or_rule)
+            else:
+                # raise Exception("Fact is not in the KB")
+                print("Fact is not in the KB")
+                return
+        elif isinstance(fact_or_rule, Rule):
+            if fact_or_rule in self.rules:
+                cap = 'rule: '
+                fact_or_rule = self._get_rule(fact_or_rule)
+            else:
+                # raise Exception("Rule is not in the KB")
+                print("Rule is not in the KB")
+                return
+        else: return False
 
+        lst = [cap + str(fact_or_rule.statement) + '\n']
+        print('trying kbexplain')
+        print(lst)
+
+        suplist = fact_or_rule.supported_by
+        numspace = 2
+
+        if suplist: # If there are any supports
+            final_list = self.explain_helper(suplist, lst, numspace)
+            final_str = "".join(final_list)
+            print('testint testing')
+            print(final_list)
+            return final_str
+        else:
+            print('No supports')
+            return
 
 
 
