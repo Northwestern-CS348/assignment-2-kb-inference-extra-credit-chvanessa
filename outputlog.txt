@@ -4,20 +4,14 @@ TESTS FAILED
 test03 (gradingtests.UnitTests)
 Traceback (most recent call last):
   File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference-ec/gradingtests.py", line 73, in test03
-    self.assertEqual(self.KB.kb_explain(fact4), answer1)
-AssertionError: 'fact[278 chars]       rule: ((on ?x ?y), (bigger ?x ?y)) -> ([18 chars]ED\n' != 'fact[278 chars]     rule: ((on ?x ?y), (bigger ?x ?y)) -> (co[16 chars]ED\n'
-  fact: (covered B)
-    SUPPORTED BY
-      fact: (bigger A B) ASSERTED
-      rule: ((bigger A B)) -> (covered B)
-        SUPPORTED BY
-          fact: (on A B)
-            SUPPORTED BY
-              fact: (heavier B A) ASSERTED
-              rule: ((heavier ?x ?y)) -> (on ?y ?x) ASSERTED
--           rule: ((on ?x ?y), (bigger ?x ?y)) -> (covered ?y) ASSERTED
-? --
-+         rule: ((on ?x ?y), (bigger ?x ?y)) -> (covered ?y) ASSERTED
+    self.compare(self.KB.kb_explain(fact4), answer1)
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference-ec/gradingtests.py", line 18, in compare
+    '"{0}" ({1} lead spaces)'.format(a, len(a) - len(a.strip())))
+AssertionError: '"          rule: ((on ?x ?y), (bigger ?x ?y)) -> ([34 chars]ces)' != '"        rule: ((on ?x ?y), (bigger ?x ?y)) -> (co[31 chars]ces)'
+- "          rule: ((on ?x ?y), (bigger ?x ?y)) -> (covered ?y) ASSERTED" (10 lead spaces)
+?  --                                                                      ^^
++ "        rule: ((on ?x ?y), (bigger ?x ?y)) -> (covered ?y) ASSERTED" (8 lead spaces)
+?                                                                        ^
 
 
 -------------------------------
