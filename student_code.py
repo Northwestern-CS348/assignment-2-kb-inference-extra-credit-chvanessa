@@ -165,8 +165,8 @@ class KnowledgeBase(object):
 
                 # Calls explain_helper recursively if any additional supports
                 if next:
-                    n = n + 2
-                    self.explain_helper(next, outlist, n)
+                    num = n + 2
+                    self.explain_helper(next, outlist, num)
             # else:
             n = og
         return outlist
